@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set up the "Add Teacher" form
   document.getElementById("addTeacherForm").addEventListener("submit", handleAddTeacher);
+
+  // Set up the "Add Student" form
+  document.getElementById("addStudentForm").addEventListener("submit", handleAddStudent);
 });
 
 // ============================================
@@ -221,6 +224,63 @@ async function handleAddTeacher(e) {
 }
 
 // ============================================
+// Add New Student
+// ============================================
+async function handleAddStudent(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("studentName").value.trim();
+  const email = document.getElementById("studentEmail").value.trim();
+  const password = document.getElementById("studentPassword").value;
+  const btn = document.getElementById("addStudentBtn");
+  const errorDiv = document.getElementById("addStudentError");
+
+  errorDiv.classList.add("hidden");
+
+  // Validate
+  if (!name || !email || !password) {
+    errorDiv.textContent = "All fields are required.";
+    errorDiv.classList.remove("hidden");
+    return;
+  }
+
+  if (password.length < 6) {
+    errorDiv.textContent = "Password must be at least 6 characters.";
+    errorDiv.classList.remove("hidden");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Adding...";
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/students`, {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!data.success) throw new Error(data.message);
+
+    // Clear form and reload student list
+    document.getElementById("addStudentForm").reset();
+    showToast("Student added successfully!", "success");
+    loadStudents();
+
+    // Close the modal
+    toggleAddStudentModal(false);
+  } catch (error) {
+    errorDiv.textContent = error.message;
+    errorDiv.classList.remove("hidden");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Add Student";
+  }
+}
+
+// ============================================
 // Delete User (Student or Teacher)
 // ============================================
 async function deleteUser(id, name, role) {
@@ -262,6 +322,22 @@ function toggleAddTeacherModal(show) {
     modal.classList.remove("flex");
     document.getElementById("addTeacherForm").reset();
     document.getElementById("addTeacherError").classList.add("hidden");
+  }
+}
+
+// ============================================
+// Add Student Modal Toggle
+// ============================================
+function toggleAddStudentModal(show) {
+  const modal = document.getElementById("addStudentModal");
+  if (show) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  } else {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.getElementById("addStudentForm").reset();
+    document.getElementById("addStudentError").classList.add("hidden");
   }
 }
 
