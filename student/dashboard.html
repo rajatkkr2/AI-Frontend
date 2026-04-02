@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard - School Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+
+  <!-- Top Navigation Bar -->
+  <nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            </svg>
+          </div>
+          <span class="text-lg font-semibold text-gray-800">Student Dashboard</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="text-right">
+            <span class="text-sm text-gray-600 block" id="studentName">Student</span>
+            <span class="text-xs text-gray-400" id="studentEmail">email</span>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Student</span>
+          <button onclick="logout()"
+            class="text-sm text-red-500 hover:text-red-700 font-medium transition">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <!-- Total Classes -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <p class="text-sm text-gray-500">Total Classes</p>
+        <p id="totalClasses" class="text-3xl font-bold text-gray-800 mt-1">--</p>
+      </div>
+      <!-- Present -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <p class="text-sm text-gray-500">Present</p>
+        <p id="presentCount" class="text-3xl font-bold text-green-600 mt-1">--</p>
+      </div>
+      <!-- Absent -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <p class="text-sm text-gray-500">Absent</p>
+        <p id="absentCount" class="text-3xl font-bold text-red-600 mt-1">--</p>
+      </div>
+      <!-- Percentage -->
+      <div class="bg-white rounded-xl shadow-sm border p-5">
+        <p class="text-sm text-gray-500">Attendance %</p>
+        <p id="percentage" class="text-3xl font-bold text-gray-800 mt-1">--%</p>
+      </div>
+    </div>
+
+    <!-- Attendance Records -->
+    <div class="bg-white rounded-xl shadow-sm border">
+      <div class="border-b px-6 py-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h2 class="text-lg font-semibold text-gray-800">Attendance Records</h2>
+          <!-- Filters -->
+          <div class="flex items-center space-x-2">
+            <select id="filterMonth"
+              class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              <option value="">All Months</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <select id="filterYear"
+              class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              <option value="">All Years</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+            <button onclick="loadMyAttendance()"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+              Filter
+            </button>
+            <button onclick="clearFilters()"
+              class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition">
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <div id="attendanceList">
+          <!-- Populated by JS -->
+          <div class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/config.js"></script>
+  <script src="/js/student.js"></script>
+</body>
+</html>

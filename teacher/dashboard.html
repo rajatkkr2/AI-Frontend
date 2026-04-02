@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard - School Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+
+  <!-- Top Navigation Bar -->
+  <nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          </div>
+          <span class="text-lg font-semibold text-gray-800">Teacher Dashboard</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="text-right">
+            <span class="text-sm text-gray-600 block" id="teacherName">Teacher</span>
+            <span class="text-xs text-gray-400" id="teacherSubject">Subject</span>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">Teacher</span>
+          <button onclick="logout()"
+            class="text-sm text-red-500 hover:text-red-700 font-medium transition">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Tabs -->
+    <div class="bg-white rounded-xl shadow-sm border">
+      <div class="border-b px-6 pt-4">
+        <div class="flex space-x-8">
+          <button id="markTab" onclick="switchTeacherTab('mark')"
+            class="pb-3 px-1 border-b-2 border-indigo-600 text-indigo-600 font-medium text-sm cursor-pointer">
+            Mark Attendance
+          </button>
+          <button id="viewTab" onclick="switchTeacherTab('view')"
+            class="pb-3 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm cursor-pointer">
+            View Records
+          </button>
+        </div>
+      </div>
+
+      <!-- Mark Attendance Panel -->
+      <div id="markPanel" class="p-6">
+        <!-- Date Picker & Quick Actions -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div class="flex items-center space-x-3">
+            <label class="text-sm font-medium text-gray-700">Date:</label>
+            <input type="date" id="attendanceDate"
+              class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+          </div>
+          <div class="flex space-x-2">
+            <button onclick="markAll('present')"
+              class="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-sm font-medium hover:bg-green-200 transition">
+              Mark All Present
+            </button>
+            <button onclick="markAll('absent')"
+              class="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition">
+              Mark All Absent
+            </button>
+          </div>
+        </div>
+
+        <!-- Student List for Attendance -->
+        <div id="attendanceForm">
+          <div id="studentCheckboxes" class="space-y-2">
+            <!-- Populated by JS -->
+            <div class="flex justify-center py-8">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-6 flex justify-end">
+            <button id="submitAttendanceBtn" onclick="submitAttendance()"
+              class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Submit Attendance
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Records Panel (hidden by default) -->
+      <div id="viewPanel" class="p-6 hidden">
+        <!-- Date Filter -->
+        <div class="flex items-center space-x-3 mb-6">
+          <label class="text-sm font-medium text-gray-700">Filter by Date:</label>
+          <input type="date" id="filterDate"
+            class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+          <button onclick="loadAttendanceRecords()"
+            class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+            Filter
+          </button>
+          <button onclick="document.getElementById('filterDate').value=''; loadAttendanceRecords()"
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50 transition">
+            Clear
+          </button>
+        </div>
+
+        <!-- Records List -->
+        <div id="recordsList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="/js/config.js"></script>
+  <script src="/js/teacher.js"></script>
+</body>
+</html>
